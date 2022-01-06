@@ -13,13 +13,19 @@ class ParametersManager
         if (isset($options["h"]) || isset($options["help"])) {
             $this->printHelp();
         }
-        if (isset($options["p"]) || isset($options["path"])) {
+        if (isset($options["p"])) {
             $this->filePath = $options["p"];
         }
-        if (isset($options["s"]) || isset($options["separator"])) {
+        if (isset($options["path"])) {
+            $this->filePath = $options["path"];
+        }
+        if (isset($options["s"])) {
             $this->separator = $options["s"];
         }
-        $this->checkFilePath();
+        if (isset($options["separator"])) {
+            $this->separator = $options["separator"];
+        }
+        $this->checkParameters();
     }
 
     public function getSeparator(): string
@@ -34,17 +40,17 @@ class ParametersManager
 
     function printHelp(): void
     {
-        echo"-------------------------------------------------------\n";
-        echo"           script migration parameters\n";
+        echo "-------------------------------------------------------\n";
+        echo "           script migration parameters\n";
         echo "  -p– | --path      <path>      (required) | indicate path of your csv file \n";
         echo "  -s  | --separator <separator> (optional) | separator used in your csv file. default value: ',' \n";
         echo "  -h  | --help                             | show this text.\n";
         echo "\n";
-        echo"-------------------------------------------------------\n";
+        echo "-------------------------------------------------------\n";
         exit();
     }
 
-    private function checkFilePath(): void
+    private function checkParameters(): void
     {
         if (strlen($this->filePath) == 0) {
             ErrorUtils::SendCriticalError("Please enter a path file with parameter --path <path> or -p <path>. \nFor more information refer to --help command.");
@@ -54,6 +60,9 @@ class ParametersManager
         }
         if (!file_exists($this->filePath)) {
             ErrorUtils::SendCriticalError("file '" . $this->filePath . "' does not exist.");
+        }
+        if (strlen($this->separator) == 0) {
+            ErrorUtils::SendCriticalError("Separator can't be empty.");
         }
     }
 
