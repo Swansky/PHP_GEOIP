@@ -12,7 +12,6 @@ class Database
     public function connect(): void
     {
         try {
-            //$this->pdo = new PDO('mysql:host=' . self::HOST . ';dbname=' . self::DB_NAME, self::USERNAME, self::PASSWORD);
             $this->pdo = new PDO('mysql:host=' . self::HOST .
                 ';dbname=' . self::DB_NAME .
                 ';charset=' . self::CHARSET,
