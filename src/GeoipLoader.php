@@ -10,7 +10,7 @@ class GeoipLoader
         $row = 1;
         if (($handle = fopen($filePath, "r")) !== FALSE) {
             try {
-                while (($data = fgetcsv($handle, 1000, $separator)) !== FALSE) {
+                while (($data = fgetcsv($handle, null, $separator)) !== FALSE) {
                     $geoip = new Geoip();
                     $num = count($data);
                     $row++;
