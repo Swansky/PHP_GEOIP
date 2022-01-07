@@ -9,15 +9,16 @@ require_once "src/ErrorUtils.php";
 require_once "src/GeoipMigrate.php";
 require_once "src/Geolocalise.php";
 require_once "src/Parameter.php";
-
-$database = new Database();
-$database->connect();
-$geolocalise = new Geolocalise($database);
-$geolocalise->geolocalisation();
-
 $parametersManager = new ParametersManager();
 $parametersManager->checkOptions();
 $parameter = $parametersManager->getParameter();
+$database = new Database();
+$database->connect($parameter);
+
+$geolocalise = new Geolocalise($database);
+$geolocalise->geolocalisation();
+
+
 $parameter->printAllParameter();
 
 echo "\n\nStart db connexion...\n\n";

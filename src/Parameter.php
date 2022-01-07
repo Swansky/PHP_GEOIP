@@ -8,6 +8,10 @@ class Parameter
     private string $endCsvLineString = "\n";
     private string $csvPath = "";
     private int $methodUsed = 0;
+    private string $bddHost = "127.0.0.1";
+    private string $bddUsername = "root";
+    private string $bddPassword = "example";
+    private string $bddName = "tp-geoip";
 
 
     public function checkParameters(): void
@@ -118,7 +122,73 @@ class Parameter
                 break;
         }
         ErrorUtils::SendCriticalError("No string define for this method !");
+        return "";
     }
+
+    /**
+     * @return string
+     */
+    public function getBddHost(): string
+    {
+        return $this->bddHost;
+    }
+
+    /**
+     * @param string $bddHost
+     */
+    public function setBddHost(string $bddHost): void
+    {
+        $this->bddHost = $bddHost;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBddUsername(): string
+    {
+        return $this->bddUsername;
+    }
+
+    /**
+     * @param string $bddUsername
+     */
+    public function setBddUsername(string $bddUsername): void
+    {
+        $this->bddUsername = $bddUsername;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBddPassword(): string
+    {
+        return $this->bddPassword;
+    }
+
+    /**
+     * @param string $bddPassword
+     */
+    public function setBddPassword(string $bddPassword): void
+    {
+        $this->bddPassword = $bddPassword;
+    }
+
+    /**
+     * @return string
+     */
+    public function getBddName(): string
+    {
+        return $this->bddName;
+    }
+
+    /**
+     * @param string $bddName
+     */
+    public function setBddName(string $bddName): void
+    {
+        $this->bddName = $bddName;
+    }
+
 
 
 }

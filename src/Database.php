@@ -2,21 +2,17 @@
 
 class Database
 {
-    private const HOST = "127.0.0.1";
-    private const DB_NAME = "tp-geoip";
     private const CHARSET = "utf8";
-    private const USERNAME = "root";
-    private const PASSWORD = "example";
     private PDO $pdo;
 
-    public function connect(): void
+    public function connect(Parameter $parameter): void
     {
         try {
-            $this->pdo = new PDO('mysql:host=' . self::HOST .
-                ';dbname=' . self::DB_NAME .
+            $this->pdo = new PDO('mysql:host=' . $parameter->getBddHost() .
+                ';dbname=' . $parameter->getBddName() .
                 ';charset=' . self::CHARSET,
-                self::USERNAME,
-                self::PASSWORD, array(
+                $parameter->getBddUsername(),
+                $parameter->getBddPassword(), array(
                     PDO::MYSQL_ATTR_LOCAL_INFILE => true,
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
                     PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL

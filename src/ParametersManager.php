@@ -1,5 +1,6 @@
 <?php
 
+
 class ParametersManager
 {
     private Parameter $parameter;
@@ -39,6 +40,7 @@ class ParametersManager
         }
 
         $this->parameter->checkParameters();
+        $this->askForDataBaseParameters();
     }
 
     function printHelp(): void
@@ -63,6 +65,23 @@ class ParametersManager
     public function getParameter(): Parameter
     {
         return $this->parameter;
+    }
+
+    function askForDataBaseParameters()
+    {
+        echo "Database information: \n";
+        $line = readline("Hostname:(default: 127.0.0.1)");
+        if (strlen($line) > 0) {
+            $this->parameter->setBddHost($line);
+        }
+        $line = readline("Username:(default: root)");
+        if (strlen($line) > 0) {
+            $this->parameter->setBddUsername($line);
+        }
+        $line = readline("Password:(default: example)");
+        if (strlen($line) > 0) {
+            $this->parameter->setBddPassword($line);
+        }
     }
 
 
