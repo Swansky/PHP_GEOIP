@@ -2,6 +2,7 @@
 
 class Geoip
 {
+    // Column id csv and database
     private const IP_FROM = 0;
     private const IP_TO = 1;
     private const COUNTRY_CODE = 2;

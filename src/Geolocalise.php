@@ -31,20 +31,25 @@ class Geolocalise
     private function findIp(int $computeAddr): array
     {
         $geoips = array();
-        $pdo = $this->database->getConnection();
-        $statement = $pdo->prepare("SELECT country_code,country_name,region_name,city_name,latitude,longitude FROM geoip WHERE ip_from=?");
-        $statement->execute(array($computeAddr));
-        $response = $statement->fetchAll();
-        foreach ($response as $geoipFetch) {
-            $geoip = new Geoip();
-            $geoip->setCountryCode($geoipFetch["country_code"]);
-            $geoip->setCountryName($geoipFetch["country_name"]);
-            $geoip->setRegionName($geoipFetch["region_name"]);
-            $geoip->setCityName($geoipFetch["city_name"]);
-            $geoip->setLatitude($geoipFetch["latitude"]);
-            $geoip->setLongitude($geoipFetch["longitude"]);
-            array_push($geoips, $geoip);
+        try {
+            $pdo = $this->database->getConnection();
+            $statement = $pdo->prepare("SELECT country_code,country_name,region_name,city_name,latitude,longitude FROM geoip WHERE ip_from=?");
+            $statement->execute(array($computeAddr));
+            $response = $statement->fetchAll();
+            foreach ($response as $geoipFetch) {
+                $geoip = new Geoip();
+                $geoip->setCountryCode($geoipFetch["country_code"]);
+                $geoip->setCountryName($geoipFetch["country_name"]);
+                $geoip->setRegionName($geoipFetch["region_name"]);
+                $geoip->setCityName($geoipFetch["city_name"]);
+                $geoip->setLatitude($geoipFetch["latitude"]);
+                $geoip->setLongitude($geoipFetch["longitude"]);
+                array_push($geoips, $geoip);
+            }
+        } catch (Exception $e) {
+            ErrorUtils::SendCriticalError("Impossible to find information for this ip: " . $e->getMessage());
         }
+
         return $geoips;
     }
 

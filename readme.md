@@ -19,6 +19,7 @@ php migrate_geoip_csv.php --method <0:1>
 
 For more information please use help comand.
 
+
 # Method
 
 Classic method is used by default.
@@ -32,3 +33,5 @@ This method sends the csv file to the sql server. This method requires that the 
 ```sql
 SET GLOBAL local_infile=1;
 ```
+
+
