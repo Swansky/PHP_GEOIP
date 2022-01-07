@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-ini_set('memory_limit', '4096M');
 
 require_once "src/ParametersManager.php";
 require_once "src/Database.php";
@@ -10,6 +9,7 @@ require_once "src/ErrorUtils.php";
 require_once "src/GeoipMigrate.php";
 require_once "src/Geolocalise.php";
 require_once "src/Parameter.php";
+
 $database = new Database();
 $database->connect();
 $geolocalise = new Geolocalise($database);
@@ -27,6 +27,7 @@ $connection = $database->getConnection();
 $methodUsed = $parameter->getMethodUsed();
 $totalStart = microtime(true);
 if ($methodUsed == Parameter::$CLASSIC_METHOD) {
+    ini_set('memory_limit', '4096M');
     echo "Start csv parsing...\n\n";
     $start = microtime(true);
     $geoipLoader = new GeoipLoader();

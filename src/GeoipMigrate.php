@@ -10,7 +10,7 @@ class GeoipMigrate
         $this->database = $database;
     }
 
-    // first technic
+    // classic method
     public function migrateGeoIpToDataBase(array $geoips): void
     {
         $pdo = $this->database->getConnection();
@@ -27,7 +27,7 @@ class GeoipMigrate
         }
     }
 
-    // SQL Method find by Yohann Duboeuf https://github.com/YohannDuboeuf/PHP_GEOIP
+    // Fast: SQL Method find by Yohann Duboeuf https://github.com/YohannDuboeuf/PHP_GEOIP
     public function migrateCSVFileToDataBase(Parameter $parameter)
     {
         try {
