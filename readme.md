@@ -19,7 +19,9 @@ php migrate_geoip_csv.php --method <0:1>
 
 For more information please use help comand.
 
-#Method
+# Method
+
+Classic method is used by default.
 
 ### Classic (0)
 This method parse the csv file and insert each line in the database.
