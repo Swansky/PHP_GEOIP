@@ -33,7 +33,7 @@ class GeoipMigrate
         try {
             $pdo = $this->database->getConnection();
             $prepareStatement = $pdo->prepare("LOAD DATA LOCAL INFILE ? INTO TABLE geoip FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY ?");
-            $prepareStatement->execute(array($parameter->getCsvPath(), $parameter->getSeparator(), $parameter->getEndCsv()));
+            $prepareStatement->execute(array($parameter->getCsvPath(), $parameter->getSeparator(), $parameter->getEndCsvLineString()));
 
         } catch (Exception $e) {
             ErrorUtils::SendCriticalError("Impossible to load csv file to mysql server: " . $e->getMessage());

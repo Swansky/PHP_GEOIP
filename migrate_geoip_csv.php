@@ -24,19 +24,31 @@ echo "\n\nStart db connexion...\n\n";
 
 $connection = $database->getConnection();
 
-/*echo "Start csv parsing...\n\n";
-$start = microtime(true);
-$geoipLoader = new GeoipLoader();
-$allGeoIp = $geoipLoader->loadFromCSV($parametersManager->getFilePath(), $parametersManager->getSeparator());
-$time_elapsed_secs = microtime(true) - $start;
-echo sizeof($allGeoIp) . " elements have been parsed in " . $time_elapsed_secs . "s\n";*/
+$methodUsed = $parameter->getMethodUsed();
+$totalStart = microtime(true);
+if ($methodUsed == Parameter::$CLASSIC_METHOD) {
+    echo "Start csv parsing...\n\n";
+    $start = microtime(true);
+    $geoipLoader = new GeoipLoader();
+    $allGeoIp = $geoipLoader->loadFromCSV($parameter->getCsvPath(), $parameter->getSeparator());
+    $time_elapsed_secs = microtime(true) - $start;
+    echo sizeof($allGeoIp) . " elements have been parsed in " . $time_elapsed_secs . "s\n";
+
+    echo "Start migrate to bdd...\n";
+    $start = microtime(true);
+    $geoipMigrate = new GeoipMigrate($database);
+    $geoipMigrate->migrateGeoIpToDataBase($allGeoIp);
+    $time_elapsed_secs = microtime(true) - $start;
+} else if ($methodUsed == Parameter::$FAST_METHOD) {
+    echo "Start migrate to bdd...\n";
+    $geoipMigrate = new GeoipMigrate($database);
+    $geoipMigrate->migrateCSVFileToDataBase($parameter);
+}
+
+$time_elapsed_secs = microtime(true) - $totalStart;
+echo "\nTotal migration done in " . $time_elapsed_secs . "s  with " . $parameter->methodToString() . " method !";
 
 
-echo "Start migrate to bdd...\n";
-$start = microtime(true);
-$geoipMigrate = new GeoipMigrate($database);
-//$geoipMigrate->migrateGeoIpToDataBase($allGeoIp);
-$geoipMigrate->migrateCSVFileToDataBase($parameter);
-$time_elapsed_secs = microtime(true) - $start;
-echo "\nMigration done in " . $time_elapsed_secs . "s !";
+
+
 
