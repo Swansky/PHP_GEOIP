@@ -12,7 +12,7 @@ class Geolocalise
 
     public function geolocalisation(): void
     {
-        //$_SERVER['REMOTE_ADDR'] = "127.0.0.1"; // FOR LOCAL TEST
+        //$_SERVER['REMOTE_ADDR'] = "127.0.0.1"; // FOR LOCAL TEST WITH CLI USED
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $addr = $_SERVER['REMOTE_ADDR'];
             $addrSplit = explode(".", $addr);

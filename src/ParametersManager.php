@@ -2,40 +2,30 @@
 
 class ParametersManager
 {
-    private string $separator = ",";
-    private string $filePath = "";
+    private Parameter $parameter;
     private const SHORT_OPTIONS = "p:s:h";
     private const LONG_OPTIONS = array("path:", "separator", "help");
 
     public function checkOptions()
     {
+        $this->parameter = new Parameter();
         $options = getopt(self::SHORT_OPTIONS, self::LONG_OPTIONS);
         if (isset($options["h"]) || isset($options["help"])) {
             $this->printHelp();
         }
         if (isset($options["p"])) {
-            $this->filePath = $options["p"];
+            $this->parameter->setCsvPath($options["p"]);
         }
         if (isset($options["path"])) {
-            $this->filePath = $options["path"];
+            $this->parameter->setCsvPath($options["path"]);
         }
         if (isset($options["s"])) {
-            $this->separator = $options["s"];
+            $this->parameter->setSeparator($options["s"]);
         }
         if (isset($options["separator"])) {
-            $this->separator = $options["separator"];
+            $this->parameter->setSeparator($options["separator"]);
         }
-        $this->checkParameters();
-    }
-
-    public function getSeparator(): string
-    {
-        return $this->separator;
-    }
-
-    public function getFilePath(): string
-    {
-        return $this->filePath;
+        $this->parameter->checkParameters();
     }
 
     function printHelp(): void
@@ -50,29 +40,13 @@ class ParametersManager
         exit();
     }
 
-    private function checkParameters(): void
+    /**
+     * @return Parameter
+     */
+    public function getParameter(): Parameter
     {
-        if (strlen($this->filePath) == 0) {
-            ErrorUtils::SendCriticalError("Please enter a path file with parameter --path <path> or -p <path>. \nFor more information refer to --help command.");
-        }
-        if (!str_ends_with($this->filePath, ".csv")) {
-            ErrorUtils::SendCriticalError("File is not a csv file");
-        }
-        if (!file_exists($this->filePath)) {
-            ErrorUtils::SendCriticalError("file '" . $this->filePath . "' does not exist.");
-        }
-        if (strlen($this->separator) == 0) {
-            ErrorUtils::SendCriticalError("Separator can't be empty.");
-        }
+        return $this->parameter;
     }
 
-    public function printAllParameter(): void
-    {
-        echo "-----------------------------------------------\n";
-        echo "               Migrate csv to bdd\n\n";
-        printf("   file path: %s\n", $this->filePath);
-        printf("   separator: '%s'\n", $this->separator);
-        echo "\n-----------------------------------------------\n\n\n";
 
-    }
 }

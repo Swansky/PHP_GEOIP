@@ -16,9 +16,12 @@ class Database
                 ';dbname=' . self::DB_NAME .
                 ';charset=' . self::CHARSET,
                 self::USERNAME,
-                self::PASSWORD);
+                self::PASSWORD, array(
+                    PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL
+                ));
         } catch (PDOException $ex) {
-
             ErrorUtils::SendCriticalError("Unable to connect to the database: " . $ex->getMessage());
         }
     }

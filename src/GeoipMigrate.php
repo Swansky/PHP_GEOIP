@@ -4,11 +4,13 @@ class GeoipMigrate
 {
     private Database $database;
 
+
     public function __construct(Database $database)
     {
         $this->database = $database;
     }
 
+    // first technic
     public function migrateGeoIpToDataBase(array $geoips): void
     {
         $pdo = $this->database->getConnection();
@@ -22,6 +24,19 @@ class GeoipMigrate
             }
         } catch (Exception $e) {
             ErrorUtils::SendCriticalError("An error occurred during the migration.");
+        }
+    }
+
+    // SQL Method find by Yohann Duboeuf https://github.com/YohannDuboeuf/PHP_GEOIP
+    public function migrateCSVFileToDataBase(Parameter $parameter)
+    {
+        try {
+            $pdo = $this->database->getConnection();
+            $prepareStatement = $pdo->prepare("LOAD DATA LOCAL INFILE ? INTO TABLE geoip FIELDS TERMINATED BY ? OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY ?");
+            $prepareStatement->execute(array($parameter->getCsvPath(), $parameter->getSeparator(), $parameter->getEndCsv()));
+
+        } catch (Exception $e) {
+            ErrorUtils::SendCriticalError("Impossible to load csv file to mysql server: " . $e->getMessage());
         }
     }
 
