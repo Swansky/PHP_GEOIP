@@ -16,11 +16,7 @@ class Geolocalise
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $addr = $_SERVER['REMOTE_ADDR'];
             $addrSplit = explode(".", $addr);
-
-            $computeAddr = intval($addrSplit[3]) +
-                intval($addrSplit[2]) * 256 +
-                intval($addrSplit[1]) * 256 * 256 +
-                intval($addrSplit[0]) * 256 * 256 * 256;
+            $computeAddr = ip2long($addr);
             $geoips = $this->findIp($computeAddr);
             foreach ($geoips as $geoip) {
                 $geoip->printInformation();
