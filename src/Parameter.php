@@ -13,7 +13,6 @@ class Parameter
     private string $bddPassword = "example";
     private string $bddName = "tp-geoip";
 
-
     public function checkParameters(): void
     {
         if (strlen($this->csvPath) == 0) {
@@ -189,6 +188,28 @@ class Parameter
         $this->bddName = $bddName;
     }
 
+    public function loadDatabaseConfigFile(string $configFilePath)
+    {
+        if (file_exists($configFilePath) || is_readable($configFilePath)) {
+            $content = file_get_contents($configFilePath);
+            $json = json_decode($content);
+            foreach ($json as $key => $val) {
+                switch ($key) {
+                    case "host":
+                        $this->bddHost = $val;
+                        break;
+                    case "username":
+                        $this->bddUsername = $val;
+                        break;
+                    case "password":
+                        $this->bddPassword = $val;
+                        break;
+                }
+            }
+        } else {
+            ErrorUtils::SendCriticalError(sprintf("The config file '%s' does not exist or not readable", $configFilePath));
+        }
+    }
 
 
 }
