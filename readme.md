@@ -15,6 +15,7 @@ php migrate_geoip_csv.php --path <path>
 php migrate_geoip_csv.php --separator <separator>
 php migrate_geoip_csv.php --path <path> --end <char>
 php migrate_geoip_csv.php --method <0:1> 
+php migrate_geoip_csv.php --database <path>
 ```
 
 For more information please use help comand.
@@ -33,5 +34,17 @@ This method sends the csv file to the sql server. This method requires that the 
 ```sql
 SET GLOBAL local_infile=1;
 ```
+
+# Config File
+
+
+```json
+ {
+  "host": "127.0.0.1",
+  "username": "root",
+  "password": "example"
+}
+ ```
+
 
 
