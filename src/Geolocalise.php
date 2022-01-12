@@ -16,17 +16,17 @@ class Geolocalise
         if (isset($_SERVER['REMOTE_ADDR'])) {
             $addr = $_SERVER['REMOTE_ADDR'];
             $computeAddr = ip2long($addr);
-            $geoips = $this->findIp($computeAddr);
-            foreach ($geoips as $geoip) {
-                $geoip->printInformation();
-            }
+            $geoip = $this->findIp($computeAddr);
+
+            $geoip->printInformation();
+
         }
     }
 
-    private function findIp(int $computeAddr): array
+    private function findIp(int $computeAddr): Geoip
     {
-        $geoips = array();
         try {
+            $geoip = null;
             $pdo = $this->database->getConnection();
             $statement = $pdo->prepare("SELECT country_code,country_name,region_name,city_name,latitude,longitude FROM geoip WHERE ip_from=?");
             $statement->execute(array($computeAddr));
@@ -39,13 +39,11 @@ class Geolocalise
                 $geoip->setCityName($geoipFetch["city_name"]);
                 $geoip->setLatitude($geoipFetch["latitude"]);
                 $geoip->setLongitude($geoipFetch["longitude"]);
-                array_push($geoips, $geoip);
             }
         } catch (Exception $e) {
             ErrorUtils::SendCriticalError("Impossible to find information for this ip: " . $e->getMessage());
         }
-
-        return $geoips;
+        return $geoip;
     }
 
 }
