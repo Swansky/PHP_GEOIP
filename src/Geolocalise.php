@@ -28,7 +28,7 @@ class Geolocalise
         try {
             $geoip = null;
             $pdo = $this->database->getConnection();
-            $statement = $pdo->prepare("SELECT country_code,country_name,region_name,city_name,latitude,longitude FROM geoip WHERE ip_from=?");
+            $statement = $pdo->prepare("select country_code,country_name,region_name,city_name,latitude,longitude FROM geoip where ? BETWEEN ip_from and ip_to");
             $statement->execute(array($computeAddr));
             $response = $statement->fetchAll();
             foreach ($response as $geoipFetch) {
